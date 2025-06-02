@@ -1,0 +1,37 @@
+- name: Install Nginx
+  apt:
+    name: nginx
+    state: present
+    update_cache: yes
+
+- name: Install Git
+  apt:
+    name: git
+    state: present
+
+
+- name: Clone the web app code
+  git:
+    repo: https://github.com/ttwthomas/2048.git
+    dest: /var/www/2048
+    update: yes
+    version: master
+    force: yes
+
+- name: Update Nginx root directory
+  replace:
+    path: /etc/nginx/sites-enabled/default
+    regexp: 'root /var/www/html;'
+    replace: 'root /var/www/2048/app;'
+
+- name: Set correct permissions on the website directory
+  file:
+    path: /var/www/2048/app
+    mode: '0755'
+    recurse: yes
+
+- name: Restart Nginx
+  service:
+    name: nginx
+    state: restarted
+

@@ -1,0 +1,4 @@
+- name: Configuration and deployment of 2048 on nginx server
+  hosts: web
+  roles:
+    - nginx_2048
